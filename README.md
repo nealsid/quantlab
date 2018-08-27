@@ -26,3 +26,17 @@ apologies.
 I used some C++14 features like auto lambda parameters and
 "make_unique"; if the build environment is only C++11, apologies
 again.
+
+
+Testcases
+
+10-trades-same-symbol-same-time-except-last.txt - 10 trades of the same symbol at the same time, except the last one.
+1m-trades-1-symbol-all-1-us-apart-except-last.txt - 1 million trades, all 1 microsecond apart except the last one
+1m-trades-1-symbol-all-1-us-apart.txt - 1 million trades, all 1 microsecond apart
+1m-trades-10-symbols-all-1-us-apart.txt - 1 million trades, 10 symbols, all 1 us apart.
+1m-trades-2-symbols-all-1-us-apart.txt - 1 million trades, 2 symbols, 1 us apart.
+input.txt - Provided by quantlab.
+oldest-trade-has-max-price.txt - Oldest trade has max price.
+one-trade-per-stock_symbol.txt - Simple functional test case, 1 trade of 3 different symbols.
+simple-weighted-average-test.txt - Simple test case to verify weighted average.
+test-input.txt - Sample input provided by Quantlab.
