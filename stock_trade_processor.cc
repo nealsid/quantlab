@@ -15,27 +15,33 @@ void StockTradeProcessor::Process() {
   // separate stats calculations could be kept separate and/or reused
   // without having to reuse the entire processing function.
   s->Process({
-              [] (auto s, auto f) {
-                s->volume_traded += f.getQuantity();
+              [this] (auto f) {
+                auto& s = stockStats[f.getSymbol()];
+                s.volume_traded += f.getQuantity();
               },
-              [] (auto s, auto f) {
-                if (s->last_time_traded_us == 0) {
-                  s->max_time_gap_us = 0;
+              [this] (auto f) {
+                auto& s = stockStats[f.getSymbol()];
+                if (s.last_time_traded_us == 0) {
+                  s.max_time_gap_us = 0;
                 } else {
-                  s->max_time_gap_us = std::max(s->max_time_gap_us,
-                                                f.getTimestampUs() - s->last_time_traded_us);
+                  s.max_time_gap_us = std::max(s.max_time_gap_us,
+                                               f.getTimestampUs() - s.last_time_traded_us);
                 }
-                s->last_time_traded_us = f.getTimestampUs();
+                s.last_time_traded_us = f.getTimestampUs();
               },
-              [] (auto s, auto f) {
-                s->max_trade_price = std::max(s->max_trade_price,
-                                              f.getPrice());
+              [this] (auto f) {
+                auto& s = stockStats[f.getSymbol()];
+                s.max_trade_price = std::max(s.max_trade_price,
+                                             f.getPrice());
               },
-              [] (auto s, auto f) {
-                s->weighted_average_numerator += f.getQuantity() * f.getPrice();
+              [this] (auto f) {
+                auto& s = stockStats[f.getSymbol()];
+                s.weighted_average_numerator += f.getQuantity() * f.getPrice();
               }});      
 }
 
-void StockTradeProcessor::OutputStats(StatsFunction fn) {
-  s->ProcessStats(fn);
+void StockTradeProcessor::ProcessStats(StatsFunction statsFn) {
+  for (const auto& mapEntry : stockStats) {
+    statsFn(mapEntry.first, mapEntry.second);
+  }
 }

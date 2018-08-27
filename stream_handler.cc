@@ -15,16 +15,9 @@ void StreamHandler::Process(ProcessFunctionList functions) {
     if (f.getSymbol() == "") {
       continue;
     }
-    auto& existing = stockStats[f.getSymbol()];
 
     for (auto fn : functions) {
-      fn(&existing, f);
+      fn(f);
     }
-  }
-}
-
-void StreamHandler::ProcessStats(StatsFunction statsFn) {
-  for (const auto& mapEntry : stockStats) {
-    statsFn(mapEntry.first, mapEntry.second);
   }
 }
