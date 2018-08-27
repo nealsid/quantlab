@@ -22,8 +22,8 @@ void StreamHandler::Process(ProcessFunctionList functions) {
   }
 }
 
-void StreamHandler::PrintStats(ostream& os) {
+void StreamHandler::ProcessStats(StatsFunction statsFn) {
   for (const auto& mapEntry : stockStats) {
-    os << mapEntry.first << "\t" << mapEntry.second.volume_traded << endl;
+    statsFn(mapEntry.first, mapEntry.second);
   }
 }

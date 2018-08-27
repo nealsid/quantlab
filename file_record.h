@@ -13,7 +13,7 @@ class FileRecord {
   FileRecord(long timestamp_us, string symbol, int quantity, int price);
   friend istream& operator>>(istream& is, FileRecord& out);
 
-  long getTimestampUs() const {
+  unsigned long getTimestampUs() const {
     return timestamp_us;
   }
 
@@ -25,16 +25,16 @@ class FileRecord {
     return quantity;
   }
 
-  int getPrice() const {
+  unsigned int getPrice() const {
     return price;
   }
  private:
-  long timestamp_us;
+  unsigned long timestamp_us;
   string symbol;
   double quantity;
-  int price;
+  unsigned int price;
 
-  void setTimestampUs(long timestamp_us) {
+  void setTimestampUs(unsigned long timestamp_us) {
     this->timestamp_us = timestamp_us;
   }
 
@@ -46,7 +46,7 @@ class FileRecord {
     this->quantity = quantity;
   }
 
-  void setPrice(int price) {
+  void setPrice(unsigned int price) {
     this->price = price;
   }
 };

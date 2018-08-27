@@ -1,5 +1,4 @@
-#include "file_record.h"
-#include "stream_handler.h"
+#include "stock_trade_processor.h"
 
 #include <iostream>
 #include <fstream>
@@ -11,23 +10,8 @@ int main(int argc, char* argv[]) {
     return 1;
   }
   ifstream input(argv[1]);
-  StreamHandler s(input);
-  s.Process({
-             [] (StockStats* s, FileRecord f) {
-               s->volume_traded += f.getQuantity();
-             },
-             [] (StockStats* s, FileRecord f) {
-               s->max_time_gap = std::max(s->max_time_gap,
-                                          f.getTimestampUs() - s->last_time_traded);
-             },
-             [] (StockStats* s, FileRecord f) {
-               s->max_trade_price = std::max(s->max_trade_price,
-                                             f.getPrice());
-             },
-             [] (StockStats* s, FileRecord f) {
-               s->weighted_average_numerator += f.getQuantity() * f.getPrice();
-             }});      
-
-  s.PrintStats(cerr);
+  StockTradeProcessor s(input);
+  s.Process();
+  s.OutputStats(cerr);
   return 0;
 }
