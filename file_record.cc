@@ -33,7 +33,7 @@ istream& operator>>(istream& is, FileRecord& out) {
   // in case it's negative.
   auto quantity = std::abs(stod(component));
   if (quantity != 0) {
-    out.setQuantity();
+    out.setQuantity(quantity);
   } else {
     // if quantity is 0, it may be valid somehow, but for our purposes
     // it won't contribute to the statistics we calculate, so throw it

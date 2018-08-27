@@ -13,14 +13,15 @@ int main(int argc, char* argv[]) {
   ifstream input(argv[1]);
   StockTradeProcessor s(input);
   s.Process();
-  s.OutputStats([] (const auto& symbol, const auto& stats) {
-                  cout << symbol << ","
-                       << stats.max_time_gap_us << ","
-                       << setprecision(10)
-                       << stats.volume_traded << ","
-                       << setprecision(20)
-                       << stats.weighted_average_numerator / stats.volume_traded << ","
-                       << stats.max_trade_price << endl;
+  ofstream of("output.csv", ios::out | ios::trunc);
+  s.OutputStats([&of] (const auto& symbol, const auto& stats) {
+                  of << symbol << ","
+                     << stats.max_time_gap_us << ","
+                     << setprecision(10)
+                     << stats.volume_traded << ","
+                     << setprecision(20)
+                     << stats.weighted_average_numerator / stats.volume_traded << ","
+                     << stats.max_trade_price << endl;
                 });
   return 0;
 }
