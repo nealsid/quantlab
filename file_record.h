@@ -9,6 +9,7 @@ constexpr char DELIMITER = ',';
 
 class FileRecord {
  public:
+  FileRecord() { }
   FileRecord(long timestamp_us, string symbol, int quantity, int price);
   friend istream& operator>>(istream& is, FileRecord& out);
 
@@ -20,7 +21,7 @@ class FileRecord {
     return symbol;
   }
 
-  int getQuantity() const {
+  double getQuantity() const {
     return quantity;
   }
 
@@ -30,7 +31,7 @@ class FileRecord {
  private:
   long timestamp_us;
   string symbol;
-  int quantity;
+  double quantity;
   int price;
 
   void setTimestampUs(long timestamp_us) {
@@ -41,7 +42,7 @@ class FileRecord {
     this->symbol = symbol;
   }
 
-  void setQuantity(int quantity) {
+  void setQuantity(double quantity) {
     this->quantity = quantity;
   }
 
