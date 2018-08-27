@@ -5,10 +5,14 @@
 
 using namespace std;
 
+// In memory representation of each line of the input file.
 class FileRecord {
  public:
   FileRecord() { }
   FileRecord(long timestamp_us, string symbol, int quantity, int price);
+
+  // The stream extraction operator is a friend so it can access the
+  // setters.
   friend istream& operator>>(istream& is, FileRecord& out);
 
   unsigned long getTimestampUs() const {
