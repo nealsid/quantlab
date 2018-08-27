@@ -7,6 +7,7 @@
 
 using namespace std;
 
+using StatsFunction = std::function<void(const string& symbol, const StockStats& stats)>;
 class StockTradeProcessor {
  public:
   explicit StockTradeProcessor(istream& is) :
@@ -14,7 +15,7 @@ class StockTradeProcessor {
 
   }
   void Process();
-  void OutputStats(ostream& os);
+  void OutputStats(StatsFunction fn);
  private:
   unique_ptr<StreamHandler> s;
 };

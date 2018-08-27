@@ -9,10 +9,11 @@ void StreamHandler::Process(ProcessFunctionList functions) {
   FileRecord f;
   while (!is.eof()) {
     // Sometimes EOF isn't true until the next getline is done, so we
-    // use an empty symbol string as a break condition.
+    // use an empty symbol string as a continue condition, which can
+    // also happen if the input file has comments.
     is >> f;
     if (f.getSymbol() == "") {
-      break;
+      continue;
     }
     auto& existing = stockStats[f.getSymbol()];
 

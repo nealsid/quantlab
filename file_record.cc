@@ -1,6 +1,7 @@
 #include "file_record.h"
 
 #include <iostream>
+#include <cmath>
 
 FileRecord::FileRecord(long timestamp_us, string symbol, int quantity, int price) {
   this->timestamp_us = timestamp_us;
@@ -13,7 +14,7 @@ FileRecord::FileRecord(long timestamp_us, string symbol, int quantity, int price
 istream& operator>>(istream& is, FileRecord& out) {
   string line;
   getline(is, line);
-  if (is.eof()) {
+  if (is.eof() || line.empty() || line[0] == '#') {
     out.setSymbol("");
     return is;
   }
@@ -25,7 +26,18 @@ istream& operator>>(istream& is, FileRecord& out) {
   getline(lineStream, component, DELIMITER);
   out.setSymbol(component);
   getline(lineStream, component, DELIMITER);
-  out.setQuantity(stod(component));
+  // For our purposes, we can take the absolute value of the quantity,
+  // in case it's negative.
+  auto quantity = std::abs(stod(component));
+  if (quantity != 0) {
+    out.setQuantity();
+  } else {
+    // if quantity is 0, it may be valid somehow, but for our purposes
+    // it won't contribute to the statistics we calculate, so throw it
+    // out.
+    out.setSymbol("");
+    return is;
+  }
   getline(lineStream, component, DELIMITER);
   out.setPrice(stoi(component));
   return is;

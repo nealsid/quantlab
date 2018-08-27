@@ -11,10 +11,10 @@ using namespace std;
 
 void StockTradeProcessor::Process() {
   s->Process({
-              [] (StockStats* s, FileRecord f) {
+              [] (auto s, auto f) {
                 s->volume_traded += f.getQuantity();
               },
-              [] (StockStats* s, FileRecord f) {
+              [] (auto s, auto f) {
                 if (s->last_time_traded_us == 0) {
                   s->max_time_gap_us = 0;
                 } else {
@@ -23,22 +23,15 @@ void StockTradeProcessor::Process() {
                 }
                 s->last_time_traded_us = f.getTimestampUs();
               },
-              [] (StockStats* s, FileRecord f) {
+              [] (auto s, auto f) {
                 s->max_trade_price = std::max(s->max_trade_price,
                                               f.getPrice());
               },
-              [] (StockStats* s, FileRecord f) {
+              [] (auto s, auto f) {
                 s->weighted_average_numerator += f.getQuantity() * f.getPrice();
               }});      
 }
 
-void StockTradeProcessor::OutputStats(ostream& os) {
-  s->ProcessStats([&os] (const string& symbol, const StockStats& stats) {
-                    os << symbol << ","
-                       << stats.max_time_gap_us << ","
-                       << stats.volume_traded << ","
-                       << stats.weighted_average_numerator / stats.volume_traded << ","
-                       << stats.max_trade_price << endl;
-                  });
-  
+void StockTradeProcessor::OutputStats(StatsFunction fn) {
+  s->ProcessStats(fn);
 }
