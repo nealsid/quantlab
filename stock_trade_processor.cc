@@ -10,6 +10,10 @@
 using namespace std;
 
 void StockTradeProcessor::Process() {
+  // Technically this could all be done in 1 lambda and may be faster,
+  // but I had the Process() function take a list of functions so that
+  // separate stats calculations could be kept separate and/or reused
+  // without having to reuse the entire processing function.
   s->Process({
               [] (auto s, auto f) {
                 s->volume_traded += f.getQuantity();

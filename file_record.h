@@ -1,11 +1,9 @@
 #pragma once
 
-#include <string>
 #include <sstream>
+#include <string>
 
 using namespace std;
-
-constexpr char DELIMITER = ',';
 
 class FileRecord {
  public:

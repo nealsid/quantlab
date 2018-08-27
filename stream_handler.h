@@ -13,8 +13,8 @@ class FileRecord;
 using ProcessFunctionList = std::initializer_list<std::function<void(StockStats*, FileRecord)>>;
 using StatsFunction = std::function<void(const string& symbol, const StockStats&)>;
 
+// Stats tracked for each stock symbol.
 struct StockStats {
-  
   // The following two are timestamps and represent microseconds since
   // midnight.  Using chrono library may be clearer but there's no
   // overloaded stream extraction operator for duration and no
@@ -34,6 +34,9 @@ struct StockStats {
   }
 };
 
+// Class that handles input from the stream containing stock trades
+// and supports processing via lambdas provided by the client that are
+// callbacked into.
 class StreamHandler {
  public:
   explicit StreamHandler(istream& is);

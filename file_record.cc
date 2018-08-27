@@ -1,7 +1,10 @@
 #include "file_record.h"
 
-#include <iostream>
 #include <cmath>
+#include <iostream>
+
+// Delimiter used in parsing the CSV file.
+constexpr char DELIMITER = ',';
 
 FileRecord::FileRecord(long timestamp_us, string symbol, int quantity, int price) {
   this->timestamp_us = timestamp_us;
@@ -10,7 +13,7 @@ FileRecord::FileRecord(long timestamp_us, string symbol, int quantity, int price
   this->price = price;
 }
 
-
+// Stream extraction operator to convert an CSV record into a FileRecord
 istream& operator>>(istream& is, FileRecord& out) {
   string line;
   getline(is, line);
